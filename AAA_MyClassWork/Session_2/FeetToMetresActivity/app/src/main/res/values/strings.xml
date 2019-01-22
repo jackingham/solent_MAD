@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FeetToMetresActivity</string>
+    <string name="convertBtn">Convert!</string>
+</resources>
