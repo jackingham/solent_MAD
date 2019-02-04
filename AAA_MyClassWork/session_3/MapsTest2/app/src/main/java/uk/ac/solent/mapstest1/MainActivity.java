@@ -12,17 +12,20 @@ import android.view.View.OnClickListener;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.EditText;
+import android.support.v7.app.AlertDialog;
+
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener
-{
+public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     MapView mv;
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -40,24 +43,52 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
         b.setOnClickListener(this);
     }
 
-    public void onClick(View view)
-        {
-            mv = (MapView)findViewById(R.id.map1);
-            EditText et_lat = (EditText)findViewById(R.id.et1);
-            EditText et_long = (EditText)findViewById(R.id.et2);
+    private void popupMessage(String message) {
+        new AlertDialog.Builder(this).setPositiveButton("OK", null).setMessage(message).show();
+    }
 
-            String LatString= et_lat.getText().toString();
-            float latitude=Float.parseFloat(LatString);
-
-            String LongString= et_long.getText().toString();
-            float longitude=Float.parseFloat(LongString);
-
-            mv.setBuiltInZoomControls(true);
-            mv.getController().setZoom(16);
-            mv.getController().setCenter(new GeoPoint(latitude, longitude));
+        public void onClick(View view) {
+        mv = (MapView) findViewById(R.id.map1);
+        EditText et_lat = (EditText) findViewById(R.id.et1);
+        EditText et_long = (EditText) findViewById(R.id.et2);
 
 
+        try {
+            System.out.println("DEBUG MESSAGE 1***********"+et_lat.getText().toString()+" "+et_long.getText().toString());
+
+            String LatString = et_lat.getText().toString();
+            double latitude = Double.parseDouble(LatString);
+
+            String LongString = et_long.getText().toString();
+            double longitude = Double.parseDouble(LongString);
+
+            System.out.println("DEBUG MESSAGE 2***********"
+                    +" "+et_long.getText().toString()+" "+longitude
+                    +" "+et_lat.getText().toString()+" "+latitude);
+
+            if (latitude >= -90 && latitude <= 90) {
+
+                if (longitude >= -180 && longitude <= 180) {
+                    mv.setBuiltInZoomControls(true);
+                    mv.getController().setZoom(16);
+                    mv.getController().setCenter(new GeoPoint(latitude, longitude));
+                } else {
+                    String message = "Invalid longitude";
+                    popupMessage(message);
+                }
+            }
+            else {
+                String message = "Invalid latitude";
+                popupMessage(message);
+            }
 
         }
+        catch (Exception e){
+            String message = "Invalid value entered entry";
+            popupMessage(message);
+        }
+
+
+    }
 
 }
