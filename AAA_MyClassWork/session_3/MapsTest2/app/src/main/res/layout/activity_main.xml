@@ -7,45 +7,72 @@
     tools:context=".MainActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Latitude"
-            android:id="@+id/tv1"/>
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="71dp"
+        tools:layout_editor_absoluteY="0dp">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal|numberSigned"
-            android:id="@+id/et1"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Longitude"
-            android:id="@+id/tv2"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width='match_parent' android:layout_height="wrap_content">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal|numberSigned"
-            android:id="@+id/et2"
-            />
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Latitude" />
 
-        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:id="@+id/btn1" android:text="@string/convertBtn" />
+            <TextView
+                android:id="@+id/tv2"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Longitude" />
+
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal" android:layout_width='match_parent' android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal|numberSigned" />
+
+            <EditText
+                android:id="@+id/et2"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal|numberSigned" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout android:orientation="horizontal" android:layout_width='match_parent' android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btn1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/locateBtn" />
+
+            <Button
+                android:id="@+id/btn2"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/resetBtn" />
+        </LinearLayout>
 
         <org.osmdroid.views.MapView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:enabled="true"
-            android:clickable="true"
             android:id="@+id/map1"
             tilesource="Mapnik"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:enabled="true" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

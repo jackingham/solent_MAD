@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MapsTest1</string>
-    <string name="convertBtn">Locate</string>
+    <string name="locateBtn">Locate</string>
+    <string name="resetBtn">Reset</string>
 </resources>

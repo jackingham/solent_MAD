@@ -39,53 +39,60 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         mv.setBuiltInZoomControls(true);
         mv.getController().setZoom(16);
         mv.getController().setCenter(new GeoPoint(50.939652, -0.438075));
-        Button b = (Button) findViewById(R.id.btn1);
-        b.setOnClickListener(this);
+        Button l = (Button) findViewById(R.id.btn1);
+        l.setOnClickListener(this);
+        Button r = (Button) findViewById(R.id.btn2);
+        r.setOnClickListener(this);
     }
 
     private void popupMessage(String message) {
         new AlertDialog.Builder(this).setPositiveButton("OK", null).setMessage(message).show();
     }
 
-        public void onClick(View view) {
+    public void onClick(View view) {
         mv = (MapView) findViewById(R.id.map1);
         EditText et_lat = (EditText) findViewById(R.id.et1);
         EditText et_long = (EditText) findViewById(R.id.et2);
 
+        switch (view.getId()) {
+            case R.id.btn1: //locate button
+                try {
+                    String LatString = et_lat.getText().toString();
+                    double latitude = Double.parseDouble(LatString);
+                    String LongString = et_long.getText().toString();
+                    double longitude = Double.parseDouble(LongString);
 
-        try {
-            System.out.println("DEBUG MESSAGE 1***********"+et_lat.getText().toString()+" "+et_long.getText().toString());
+                    if (latitude >= -90 && latitude <= 90) {
 
-            String LatString = et_lat.getText().toString();
-            double latitude = Double.parseDouble(LatString);
+                        if (longitude >= -180 && longitude <= 180) {
+                            mv.setBuiltInZoomControls(true);
+                            mv.getController().setZoom(16);
+                            mv.getController().setCenter(new GeoPoint(latitude, longitude));
+                        } else {
+                            String message = "Invalid longitude";
+                            popupMessage(message);
+                        }
+                    } else {
+                        String message = "Invalid latitude";
+                        popupMessage(message);
+                    }
 
-            String LongString = et_long.getText().toString();
-            double longitude = Double.parseDouble(LongString);
-
-            System.out.println("DEBUG MESSAGE 2***********"
-                    +" "+et_long.getText().toString()+" "+longitude
-                    +" "+et_lat.getText().toString()+" "+latitude);
-
-            if (latitude >= -90 && latitude <= 90) {
-
-                if (longitude >= -180 && longitude <= 180) {
-                    mv.setBuiltInZoomControls(true);
-                    mv.getController().setZoom(16);
-                    mv.getController().setCenter(new GeoPoint(latitude, longitude));
-                } else {
-                    String message = "Invalid longitude";
+                } catch (Exception e) {
+                    String message = "Invalid value entered entry";
                     popupMessage(message);
                 }
-            }
-            else {
-                String message = "Invalid latitude";
-                popupMessage(message);
-            }
+                System.out.println("DEBUG MESSAGE 1*********** locate pressed");
+                break;
 
-        }
-        catch (Exception e){
-            String message = "Invalid value entered entry";
-            popupMessage(message);
+            case R.id.btn2: // reset default
+                System.out.println("DEBUG MESSAGE 1*********** reset pressed");
+                mv.setBuiltInZoomControls(true);
+                mv.getController().setZoom(16);
+                mv.getController().setCenter(new GeoPoint(50.939652, -0.438075));
+                break;
+
+            default:
+                break;
         }
 
 
