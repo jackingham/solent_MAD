@@ -6,5 +6,6 @@
     <string name="regularview">Regular map</string>
     <string name="hikebikemapview">Hike/bike map</string>
     <string name="selectmap">Select Map</string>
+    <string name="setlocation">Set location</string>
 
 </resources>

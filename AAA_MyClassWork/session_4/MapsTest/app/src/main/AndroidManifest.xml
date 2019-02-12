@@ -23,7 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".MapChooseActivity" android:label="@string/selectmap">
+        </activity>
+        <activity android:name=".MapChangeLocation" android:label="@string/setlocation">
         </activity>
     </application>
 
