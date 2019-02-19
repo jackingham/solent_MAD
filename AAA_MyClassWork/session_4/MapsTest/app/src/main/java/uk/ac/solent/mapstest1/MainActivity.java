@@ -102,7 +102,12 @@ public class MainActivity extends AppCompatActivity{
 
             if (resultCode==RESULT_OK)
             {
-                //change the lat and long
+                Bundle extras = intent.getExtras();
+                double longitude = extras.getDouble("long_out");
+                double latitude = extras.getDouble("lat_out");
+                mv.setBuiltInZoomControls(true);
+                mv.getController().setZoom(16);
+                mv.getController().setCenter(new GeoPoint(latitude, longitude));
             }
         }
     }

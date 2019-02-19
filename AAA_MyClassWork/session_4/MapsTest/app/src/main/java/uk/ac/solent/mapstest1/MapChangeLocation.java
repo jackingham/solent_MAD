@@ -30,8 +30,8 @@ public class MapChangeLocation extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_location);
 
-       // Button locate = (Button)findViewById(R.id.btn1);
-       // locate.setOnClickListener(this);
+        Button locate = (Button)findViewById(R.id.btn1);
+        locate.setOnClickListener(this);
 
     }
 
@@ -54,10 +54,10 @@ public class MapChangeLocation extends AppCompatActivity implements View.OnClick
 
                 if (longitude >= -180 && longitude <= 180) {
 
-                    //bundle.putBoolean("com.example.hikebikemap",hikebikemap);
+                    bundle.putDouble("long_out",longitude);
+                    bundle.putDouble("lat_out",latitude);
                     intent.putExtras(bundle);
                     setResult(RESULT_OK,intent);
-
                     finish();
                 } else {
                     String message = "Invalid longitude";
