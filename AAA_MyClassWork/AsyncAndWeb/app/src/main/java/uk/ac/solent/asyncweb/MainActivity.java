@@ -2,6 +2,9 @@ package uk.ac.solent.asyncweb;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +16,7 @@ import java.net.URL;
 import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -60,5 +64,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EditText artist = findViewById(R.id.et1);
         MyTask t = new MyTask();
         t.execute(artist.getText().toString());
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == R.id.addNew)
+        {
+            Intent intent = new Intent(this,AddNewActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return false;
     }
 }
