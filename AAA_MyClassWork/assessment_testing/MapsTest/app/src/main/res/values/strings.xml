@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MapsTest1</string>
+    <string name="locateBtn">Locate</string>
+    <string name="resetBtn">Reset</string>
+    <string name="choosemap">Choose map</string>
+    <string name="regularview">Regular map</string>
+    <string name="hikebikemapview">Hike/bike map</string>
+    <string name="selectmap">Select Map</string>
+    <string name="setlocation">Set location</string>
+
+</resources>
