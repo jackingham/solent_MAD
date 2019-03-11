@@ -35,9 +35,17 @@ import android.location.Location;
 import android.content.Context;
 import android.widget.Toast;
 
+import android.preference.PreferenceManager;
+import android.widget.Toast;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.OverlayItem;
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
     MapView mv;
+    ItemizedIconOverlay<OverlayItem> items;
+
 
     /*** Called when the activity is first created.*/
     @Override
@@ -69,6 +77,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         //l.setOnClickListener(this);
         // Button r = (Button) findViewById(R.id.btn2);
         // r.setOnClickListener(this);
+
+
+        items = new ItemizedIconOverlay<OverlayItem>(this, new ArrayList<OverlayItem>(), null);
+        OverlayItem fernhurst = new OverlayItem("Fernhurst", "Village in West Sussex", new GeoPoint(51.05, -0.72));
+        OverlayItem blackdown = new OverlayItem("Blackdown", "highest point in West Sussex", new GeoPoint(51.0581, -0.6897));
+        items.addItem(fernhurst);
+        items.addItem(blackdown);
+        mv.getOverlays().add(items);
+
+
 
     }
 

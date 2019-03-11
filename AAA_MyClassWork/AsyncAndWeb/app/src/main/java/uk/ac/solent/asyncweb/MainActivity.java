@@ -16,6 +16,8 @@ import java.net.URL;
 import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
+
 import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -24,14 +26,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public String doInBackground(String... input) {
             HttpURLConnection conn = null;
             try {
-                URL url = new URL(("http://www.free-map.org.uk/course/ws/hits.php?artist=")+input[0]);
+                URL url = new URL("http://www.free-map.org.uk/course/ws/hits.php?artist=" + (URLEncoder.encode(input[0], "UTF-8")));
                 conn = (HttpURLConnection) url.openConnection();
                 InputStream in = conn.getInputStream();
                 if (conn.getResponseCode() == 200) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(in));
                     String result = "", line;
                     while ((line = br.readLine()) != null) {
-                        result += line;
+                        result += line+"\n";
                     }
                     return result;
                 } else {
@@ -78,6 +80,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(item.getItemId() == R.id.addNew)
         {
             Intent intent = new Intent(this,AddNewActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if(item.getItemId() == R.id.viewJSON)
+        {
+            Intent intent = new Intent(this,JSONLookup.class);
             startActivity(intent);
             return true;
         }
