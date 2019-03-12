@@ -68,24 +68,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         mv.getController().setZoom(16);
 
+        ItemizedIconOverlay.OnItemGestureListener<OverlayItem> markerGestureListener;
+        markerGestureListener = new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+            public boolean onItemLongPress(int i, OverlayItem item) {
+                Toast.makeText(MainActivity.this, item.getTitle() + ":" + item.getSnippet(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
 
-        // mv.getController().setZoom(16);
-        // mv.getController().setCenter(new GeoPoint(50.939652, -0.438075));
+            public boolean onItemSingleTapUp(int i, OverlayItem item) {
+                Toast.makeText(MainActivity.this, item.getTitle() + ":" + item.getSnippet(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        };
 
-
-        // Button l = (Button) findViewById(R.id.btn1);
-        //l.setOnClickListener(this);
-        // Button r = (Button) findViewById(R.id.btn2);
-        // r.setOnClickListener(this);
-
-
-        items = new ItemizedIconOverlay<OverlayItem>(this, new ArrayList<OverlayItem>(), null);
+        items = new ItemizedIconOverlay<OverlayItem>(this, new ArrayList<OverlayItem>(), markerGestureListener);
         OverlayItem fernhurst = new OverlayItem("Fernhurst", "Village in West Sussex", new GeoPoint(51.05, -0.72));
         OverlayItem blackdown = new OverlayItem("Blackdown", "highest point in West Sussex", new GeoPoint(51.0581, -0.6897));
         items.addItem(fernhurst);
         items.addItem(blackdown);
         mv.getOverlays().add(items);
-
 
 
     }
@@ -94,8 +95,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         Double newLat = newLoc.getLatitude();
         Double newLong = newLoc.getLongitude();
-
         mv.getController().setCenter(new GeoPoint(newLat, newLong));
+        OverlayItem currentLocation = new OverlayItem("You are here", "", new GeoPoint(newLat, newLong));
+        items.addItem(currentLocation);
+        currentLocation.setMarker(getResources().getDrawable(R.drawable.marker));
 
     }
 
@@ -116,23 +119,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater=getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
 
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.choosemap) {
+        if (item.getItemId() == R.id.newpoi) {
             // react to the menu item being selected...
-            Intent intent = new Intent(this, MapChooseActivity.class);
+            Intent intent = new Intent(this, AddNewPOI.class);
             startActivityForResult(intent, 0);
             return true;
-        } else if (item.getItemId() == R.id.setlocation) {
-            Intent intent = new Intent(this, MapChangeLocation.class);
-            startActivityForResult(intent, 1);
-            return true;
+
         }
         return false;
     }
@@ -143,79 +144,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             if (resultCode == RESULT_OK) {
                 Bundle extras = intent.getExtras();
-                boolean hikebikemap = extras.getBoolean("com.example.hikebikemap");
-                if (hikebikemap == true) {
-                    mv.setTileSource(TileSourceFactory.HIKEBIKEMAP);
-                } else {
-                    mv.setTileSource(TileSourceFactory.MAPNIK);
-                }
-            }
-        } else if (requestCode == 1) {
+                String name_in = extras.getString("name_out");
+                String type_in = extras.getString("name_out");
+                String description_in = extras.getString("name_out");
 
-            if (resultCode == RESULT_OK) {
-                Bundle extras = intent.getExtras();
-                double longitude = extras.getDouble("long_out");
-                double latitude = extras.getDouble("lat_out");
-                mv.setBuiltInZoomControls(true);
-                mv.getController().setZoom(16);
-                mv.getController().setCenter(new GeoPoint(latitude, longitude));
+                OverlayItem name = new OverlayItem(name_in, description_in, new GeoPoint(51.0581, -0.6897));
+                items.addItem(name);
+
+
+
             }
         }
+
     }
-
-
-    private void popupMessage(String message) {
-        new AlertDialog.Builder(this).setPositiveButton("OK", null).setMessage(message).show();
-    }
-
-    // public void onClick(View view) {
-    //   mv = (MapView) findViewById(R.id.map1);
-
-    //    EditText et_lat = (EditText) findViewById(R.id.et1);
-    //   EditText et_long = (EditText) findViewById(R.id.et2);
-
-    //    switch (view.getId()) {
-    //        case R.id.btn1: //locate button
-    //           try {
-    //               String LatString = et_lat.getText().toString();
-    //              double latitude = Double.parseDouble(LatString);
-    //              String LongString = et_long.getText().toString();
-    //             double longitude = Double.parseDouble(LongString);
-
-    //              if (latitude >= -90 && latitude <= 90) {
-
-    //                 if (longitude >= -180 && longitude <= 180) {
-    //                      mv.setBuiltInZoomControls(true);
-    //                    mv.getController().setZoom(16);
-    //                  mv.getController().setCenter(new GeoPoint(latitude, longitude));
-    //            } else {
-    //               String message = "Invalid longitude";
-    //              popupMessage(message);
-    //        }
-    //  } else {
-    //    String message = "Invalid latitude";
-    //       popupMessage(message);
-    //    }
-
-    //      } catch (Exception e) {
-    //          String message = "Invalid value entered entry";
-    //           popupMessage(message);
-    //       }
-    //       System.out.println("DEBUG MESSAGE 1*********** locate pressed");
-    //     break;
-
-    // case R.id.btn2: // reset default
-    //        System.out.println("DEBUG MESSAGE 1*********** reset pressed");
-    //        mv.setBuiltInZoomControls(true);
-    //         mv.getController().setZoom(16);
-    //         mv.getController().setCenter(new GeoPoint(50.939652, -0.438075));
-    //         break;
-
-    //      default:
-    //           break;
-    //    }
-
-
-    //}
-
 }

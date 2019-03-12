@@ -24,10 +24,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MapChooseActivity" android:label="@string/selectmap">
+        <activity android:name=".AddNewPOI">
         </activity>
-        <activity android:name=".MapChangeLocation" android:label="@string/setlocation">
-        </activity>
+
     </application>
 
 </manifest>
