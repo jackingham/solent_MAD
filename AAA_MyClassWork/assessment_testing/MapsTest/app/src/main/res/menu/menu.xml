@@ -1,4 +1,5 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/newpoi" android:title="Add new POI"/>
+    <item android:id="@+id/loadfile" android:title="Load from file"/>
 </menu>
