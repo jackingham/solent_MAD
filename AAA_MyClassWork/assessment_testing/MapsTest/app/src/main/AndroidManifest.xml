@@ -26,6 +26,8 @@
 
         <activity android:name=".AddNewPOI">
         </activity>
+        <activity android:name=".MyPrefsActivity">
+        </activity>
 
     </application>
 

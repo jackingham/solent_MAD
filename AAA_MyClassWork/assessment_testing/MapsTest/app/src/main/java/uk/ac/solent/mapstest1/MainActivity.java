@@ -47,6 +47,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import uk.ac.solent.mapstest1.POI;
+import uk.ac.solent.mapstest1.POIList;
+
 import android.os.Environment;
 
 
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     MapView mv;
     ItemizedIconOverlay<OverlayItem> items;
     OverlayItem currentLocation = null;
+
 
     /*** Called when the activity is first created.*/
     @Override
@@ -140,33 +144,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             startActivityForResult(intent, 0);
             return true;
 
+        } else if (item.getItemId() == R.id.prefs) {
+            Intent intent = new Intent(this, MyPrefsActivity.class);
+            startActivity(intent);
+            return true;
+
         } else if (item.getItemId() == R.id.loadfile) {
-            try {
-                FileReader fr = new FileReader(Environment.getExternalStorageDirectory().getAbsolutePath() + "/restaurants.csv");
-                BufferedReader reader = new BufferedReader(fr);
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] components = line.split(",");
-                    if (components.length == 5) {
-                        String newName = components[0];
-                        String newType = components[1];
-                        String newLoc = components[2];
-                        double newLong = Double.parseDouble(components[3]);
-                        double newLat = Double.parseDouble(components[4]);
 
-                        OverlayItem newItem = new OverlayItem(newName, (newType+" in "+newLoc ), new GeoPoint(newLat,newLong));
-                        items.addItem(newItem);
-                    }
-                }
-            } catch (IOException e) {
-                new AlertDialog.Builder(this).setPositiveButton("OK", null).
-                        setMessage("ERROR: " + e).show();
+           POIList.load();
+           items.removeAllItems();
+           for (POI poi : POIList.getPOIList()){
+               OverlayItem newItem = new OverlayItem(poi.getName(), poi.getType(), new GeoPoint(poi.getLatitude(),poi.getLongitude()));
+               items.addItem(newItem);
+           }
 
-            }
-
-
+            return true;
         }
-        return false;
+    return false;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
