@@ -1,11 +1,14 @@
 package uk.ac.solent.mapstest1;
 
+import android.app.AlertDialog;
 import android.os.Environment;
 import uk.ac.solent.mapstest1.POI;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +28,7 @@ public class POIList {
                     String newDesc = components[2];
                     double newLong = Double.parseDouble(components[3]);
                     double newLat = Double.parseDouble(components[4]);
-                    POI newPOI = new POI(newName, newType, newDesc, newLong, newLat);
+                    POI newPOI = new POI(newName, newType, newDesc, newLat, newLong);
                     addPOI(newPOI);
 
 
@@ -36,10 +39,21 @@ public class POIList {
 
         }
 
+
     }
 
     public static void save(){
+        try {
+            PrintWriter pw = new PrintWriter(new FileWriter(Environment.getExternalStorageDirectory().getAbsolutePath() + "/POIS.csv"));
+            for (POI poi : getPOIList()){
+               String newLine = poi.getName()+','+poi.getType()+','+poi.getDescription()+','+poi.getLatitude()+','+poi.getLongitude()+'\n';
+               pw.print(newLine);
+            }
+            pw.close();
 
+        } catch (IOException e) {
+            throw new RuntimeException("file handling error",e);
+        }
     }
 
     public static List<POI> getPOIList() {
