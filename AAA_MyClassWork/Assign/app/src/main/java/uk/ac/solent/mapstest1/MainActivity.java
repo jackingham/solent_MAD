@@ -29,6 +29,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
     MapView mv;
@@ -152,9 +153,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             return true;
 
         } else if (item.getItemId() == R.id.list) {
-        Intent intent = new Intent(this, ViewPOIList.class);
-        startActivity(intent);
-        return true;
+            Intent intent = new Intent(this, ViewPOIList.class);
+            startActivityForResult(intent,1);
+            return true;
         }
 
     return false;
@@ -188,6 +189,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 POIList.addPOI(newPOI);
                 Toast.makeText(this, "Marker added at current position.", Toast.LENGTH_LONG).show();
 
+
+            }
+        } else if (requestCode == 1){
+
+            if (resultCode == RESULT_OK) {
+                Bundle extras = intent.getExtras();
+                int index = extras.getInt("index");
+                List<POI> list_in = POIList.getPOIList();
+                POI chosen_poi = list_in.get(index);
+                mv.getController().setCenter(new GeoPoint(chosen_poi.getLatitude(), chosen_poi.getLongitude()));
+                mv.getController().setZoom(16);
 
             }
         }
@@ -225,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     double currLat = currentLocation.getPoint().getLatitude();
                     double currLong = currentLocation.getPoint().getLongitude();
                     items.removeAllItems();
-                    currentLocation = new OverlayItem("You are here", "", new GeoPoint(currLat, currLong));
+                    currentLocation = new OverlayItem("You are here", ":", new GeoPoint(currLat, currLong));
                     items.addItem(currentLocation);
                     currentLocation.setMarker(getResources().getDrawable(R.drawable.marker));
 

@@ -14,7 +14,8 @@ import java.util.List;
 
 public class POIList {
 
-    private static  List<POI> POIList = new ArrayList<POI>();
+    public static  List<POI> POIList = new ArrayList<POI>();
+
     public static void load(){
         try {
             FileReader fr = new FileReader(Environment.getExternalStorageDirectory().getAbsolutePath() + "/POIS.csv");
