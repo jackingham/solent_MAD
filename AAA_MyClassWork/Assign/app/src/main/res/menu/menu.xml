@@ -1,0 +1,10 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/list" android:title="Open POI list"/>
+    <item android:id="@+id/newpoi" android:title="Add new POI"/>
+    <item android:id="@+id/savefile" android:title="Save to file"/>
+    <item android:id="@+id/loadfile" android:title="Load from file"/>
+    <item android:id="@+id/loadweb" android:title="Load from web"/>
+    <item android:id="@+id/prefs" android:title="Open preferences"/>
+
+</menu>

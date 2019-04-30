@@ -9,40 +9,17 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.view.View.OnClickListener;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.EditText;
 import android.support.v7.app.AlertDialog;
-
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.content.Intent;
-
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-
 import org.osmdroid.config.Configuration;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-
-
-import android.app.Activity;
-import android.os.Bundle;
 import android.location.LocationManager;
 import android.location.LocationListener;
 import android.location.Location;
 import android.content.Context;
 import android.widget.Toast;
-
-import android.preference.PreferenceManager;
-import android.widget.Toast;
-
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -50,16 +27,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-
-import uk.ac.solent.mapstest1.POI;
-import uk.ac.solent.mapstest1.POIList;
-
-import android.os.Environment;
-
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
     MapView mv;
@@ -137,13 +106,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 Toast.LENGTH_LONG).show();
     }
 
-
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
-
 
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.newpoi) {
@@ -171,18 +138,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             for (POI poi : POIList.getPOIList()){
                 OverlayItem newItem = new OverlayItem(poi.getName(), (poi.getType()+": "+poi.getDescription()), new GeoPoint(poi.getLatitude(),poi.getLongitude()));
                 items.addItem(newItem);
-           }
-
+            }
             return true;
 
-        }  else if (item.getItemId() == R.id.savefile) {
+        } else if (item.getItemId() == R.id.savefile) {
             POIList.save();
             Toast.makeText(this, "Points of interest saved to file", Toast.LENGTH_LONG).show();
             return true;
+
         } else if (item.getItemId() == R.id.loadweb) {
             DownloadTask t = new DownloadTask();
             t.execute();
             return true;
+
+        } else if (item.getItemId() == R.id.list) {
+        Intent intent = new Intent(this, ViewPOIList.class);
+        startActivity(intent);
+        return true;
         }
 
     return false;
@@ -221,6 +193,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
 
     }
+
     public void onDestroy(){
         POIList.save();
         super.onDestroy();
@@ -282,8 +255,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     }
 
-    class UploadTask extends AsyncTask<String,Void,String>
-    {
+    class UploadTask extends AsyncTask<String,Void,String> {
         public String doInBackground(String... input)
         {
             HttpURLConnection conn = null;
