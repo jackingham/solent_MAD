@@ -128,24 +128,31 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         } else if (item.getItemId() == R.id.loadfile) {
             double currLat = currentLocation.getPoint().getLatitude();
             double currLong = currentLocation.getPoint().getLongitude();
-            Toast.makeText(this, "Loading items, this will take a few seconds", Toast.LENGTH_LONG).show();
-            POIList.load();
-            items.removeAllItems();
 
-            currentLocation = new OverlayItem("You are here", "", new GeoPoint(currLat, currLong));
-            items.addItem(currentLocation);
-            currentLocation.setMarker(getResources().getDrawable(R.drawable.marker));
+            boolean loadSuccess = POIList.load();
+            if (loadSuccess) {
+                Toast.makeText(this, "Loading items, this will take a few seconds", Toast.LENGTH_LONG).show();
+                items.removeAllItems();
+                currentLocation = new OverlayItem("You are here", "", new GeoPoint(currLat, currLong));
+                items.addItem(currentLocation);
+                currentLocation.setMarker(getResources().getDrawable(R.drawable.marker));
 
-            for (POI poi : POIList.getPOIList()){
-                OverlayItem newItem = new OverlayItem(poi.getName(), (poi.getType()+": "+poi.getDescription()), new GeoPoint(poi.getLatitude(),poi.getLongitude()));
-                items.addItem(newItem);
+                for (POI poi : POIList.getPOIList()) {
+                    OverlayItem newItem = new OverlayItem(poi.getName(), (poi.getType() + ": " + poi.getDescription()), new GeoPoint(poi.getLatitude(), poi.getLongitude()));
+                    items.addItem(newItem);
+                }
+            } else {
+                new AlertDialog.Builder(MainActivity.this).setPositiveButton("OK", null).setMessage("Error loading file - you may not have saved any POIs").show();
             }
             return true;
 
         } else if (item.getItemId() == R.id.savefile) {
-            POIList.save();
-            Toast.makeText(this, "Points of interest saved to file", Toast.LENGTH_LONG).show();
-            return true;
+            boolean saveSuccess = POIList.save();
+            if (saveSuccess) {
+                Toast.makeText(this, "Points of interest saved to file", Toast.LENGTH_LONG).show();
+            } else {
+                new AlertDialog.Builder(MainActivity.this).setPositiveButton("OK", null).setMessage("Error saving file").show();
+            }
 
         } else if (item.getItemId() == R.id.loadweb) {
             DownloadTask t = new DownloadTask();
@@ -214,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     class DownloadTask extends AsyncTask<Void, Void, String> {
         public String doInBackground(Void... unused) {
-            HttpURLConnection conn = null;
+            HttpURLConnection  conn = null;
             try {
                 URL url = new URL("http://www.free-map.org.uk/course/mad/ws/get.php?year=19&username=user005&format=csv");
                 conn = (HttpURLConnection) url.openConnection();

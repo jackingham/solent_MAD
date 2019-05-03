@@ -16,7 +16,7 @@ public class POIList {
 
     public static  List<POI> POIList = new ArrayList<POI>();
 
-    public static void load(){
+    public static boolean load(){
         try {
             FileReader fr = new FileReader(Environment.getExternalStorageDirectory().getAbsolutePath() + "/POIS.csv");
             BufferedReader reader = new BufferedReader(fr);
@@ -27,23 +27,24 @@ public class POIList {
                     String newName = components[0];
                     String newType = components[1];
                     String newDesc = components[2];
-                    double newLong = Double.parseDouble(components[3]);
-                    double newLat = Double.parseDouble(components[4]);
+                    double newLong = Double.parseDouble(components[4]);
+                    double newLat = Double.parseDouble(components[3]);
                     POI newPOI = new POI(newName, newType, newDesc, newLat, newLong);
                     addPOI(newPOI);
 
 
                 }
             }
+            return true;
         } catch (IOException e) {
-            throw new RuntimeException("file handling error",e);
+            return false;
 
         }
 
 
     }
 
-    public static void save(){
+    public static boolean save(){
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(Environment.getExternalStorageDirectory().getAbsolutePath() + "/POIS.csv"));
             for (POI poi : getPOIList()){
@@ -51,9 +52,9 @@ public class POIList {
                pw.print(newLine);
             }
             pw.close();
-
+            return true;
         } catch (IOException e) {
-            throw new RuntimeException("file handling error",e);
+            return false;
         }
     }
 
